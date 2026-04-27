@@ -47,10 +47,4 @@ app.appendChild(header)
 app.appendChild(gallery.element)
 app.appendChild(footer)
 
-gallery.showLoading()
-fetchPhotos(INITIAL_QUERY)
-  .then(({ photos, total }) => gallery.render(photos, total))
-  .catch((err) => {
-    gallery.showError(err.message)
-    console.error(err)
-  })
+search(INITIAL_QUERY)

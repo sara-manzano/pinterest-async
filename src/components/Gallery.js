@@ -1,6 +1,5 @@
 import { Card } from './Card.js'
 
-// Alturas variadas para simular el efecto masonry durante la carga
 const SKELETON_HEIGHTS = [180, 240, 160, 280, 200, 220, 170, 260, 190, 210,
                           250, 180, 230, 170, 290, 200, 160, 240, 210, 180]
 
@@ -22,8 +21,9 @@ function buildCardFromPhoto(photo) {
     imageUrl:     photo.urls.small,
     altDescription: photo.alt_description,
     authorName:   photo.user.name,
-    authorAvatar: photo.user.profile_image.small,
-    authorLink:   photo.user.links.html,
+    authorAvatar: photo.user.profile_image?.small ?? '',
+    authorLink:   photo.user.links?.html ?? '',
+    detailLink:   photo.links.html,
     detailLink:   photo.links.html,
     likes:        photo.likes,
     bgColor:      photo.color,
@@ -33,24 +33,19 @@ function buildCardFromPhoto(photo) {
 }
 
 export function Gallery() {
-  // Contenedor principal
   const wrapper = document.createElement('div')
   wrapper.className = 'gallery-wrapper'
 
-  // Contador de resultados (ej. "3.200 resultados")
   const info = document.createElement('p')
   info.className = 'gallery__info'
   info.hidden = true
 
-  // Grid de fotos
   const section = document.createElement('section')
   section.className = 'gallery'
   section.setAttribute('aria-label', 'Galería de fotos')
 
   wrapper.appendChild(info)
   wrapper.appendChild(section)
-
-  // ── Métodos públicos ──────────────────────────────
 
   function render(photos, total) {
     section.innerHTML = ''
@@ -61,7 +56,6 @@ export function Gallery() {
       return
     }
 
-    // Mostrar total de resultados de la API
     info.textContent = `${new Intl.NumberFormat('es-ES').format(total)} resultados`
     info.hidden = false
 

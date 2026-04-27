@@ -1,4 +1,3 @@
-// Escapa caracteres especiales para insertar texto en HTML de forma segura
 function escapeHtml(text) {
   return String(text ?? '')
     .replace(/&/g, '&amp;')
@@ -7,12 +6,10 @@ function escapeHtml(text) {
     .replace(/"/g, '&quot;')
 }
 
-// Solo permite URLs que empiecen por http:// o https://
 function safeUrl(url) {
   return url && /^https?:\/\//.test(url) ? url : '#'
 }
 
-// Formatea un número de likes: 1200 → "1.2k"
 function formatLikes(likes) {
   if (likes >= 1000) return `${(likes / 1000).toFixed(1)}k`
   return String(likes ?? 0)
@@ -24,7 +21,6 @@ function formatDate(iso) {
   return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`
 }
 
-// Paleta de colores para el borde del avatar
 const AVATAR_COLORS = ['#b5e550', '#4a90d9', '#9b59b6', '#f39c12', '#e74c3c', '#1abc9c', '#e91e8c', '#3498db']
 function avatarColor(name) {
   let hash = 0
