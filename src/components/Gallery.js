@@ -18,21 +18,20 @@ function createSkeleton(height) {
 
 function buildCardFromPhoto(photo) {
   return Card({
-    imageUrl:     photo.urls.small,
+    imageUrl: photo.urls.small,
     altDescription: photo.alt_description,
-    authorName:   photo.user.name,
+    authorName: photo.user.name,
     authorAvatar: photo.user.profile_image?.small ?? '',
-    authorLink:   photo.user.links?.html ?? '',
-    detailLink:   photo.links.html,
-    detailLink:   photo.links.html,
-    likes:        photo.likes,
-    bgColor:      photo.color,
-    createdAt:    photo.created_at,
-    totalPhotos:  photo.user.total_photos,
+    authorLink: photo.user.links?.html ?? '',
+    detailLink: photo.links.html,
+    likes: photo.likes,
+    bgColor: photo.color,
+    createdAt: photo.created_at,
+    totalPhotos: photo.user.total_photos,
   })
 }
 
-export function Gallery() {
+export function Gallery({ onLoadMore } = {}) {
   const wrapper = document.createElement('div')
   wrapper.className = 'gallery-wrapper'
 
@@ -44,11 +43,20 @@ export function Gallery() {
   section.className = 'gallery'
   section.setAttribute('aria-label', 'Galería de fotos')
 
+  const loadMoreBtn = document.createElement('button')
+  loadMoreBtn.className = 'gallery__load-more'
+  loadMoreBtn.textContent = 'Cargar más'
+  loadMoreBtn.hidden = true
+  loadMoreBtn.addEventListener('click', () => onLoadMore?.())
+
   wrapper.appendChild(info)
   wrapper.appendChild(section)
+  wrapper.appendChild(loadMoreBtn)
 
-  function render(photos, total) {
+  function render(photos, total, hasMore = false) {
     section.innerHTML = ''
+    loadMoreBtn.hidden = true
+    loadMoreBtn.textContent = 'Cargar más'
 
     if (!photos || photos.length === 0) {
       info.hidden = true
@@ -60,16 +68,31 @@ export function Gallery() {
     info.hidden = false
 
     photos.forEach(photo => section.appendChild(buildCardFromPhoto(photo)))
+    loadMoreBtn.hidden = !hasMore
+  }
+
+  function append(photos, hasMore = false) {
+    photos.forEach(photo => section.appendChild(buildCardFromPhoto(photo)))
+    loadMoreBtn.hidden = !hasMore
+    loadMoreBtn.textContent = 'Cargar más'
+    loadMoreBtn.disabled = false
+  }
+
+  function setLoadingMore(loading) {
+    loadMoreBtn.disabled = loading
+    loadMoreBtn.textContent = loading ? 'Cargando…' : 'Cargar más'
   }
 
   function showLoading() {
     info.hidden = true
+    loadMoreBtn.hidden = true
     section.innerHTML = ''
     SKELETON_HEIGHTS.forEach(h => section.appendChild(createSkeleton(h)))
   }
 
   function showError(message) {
     info.hidden = true
+    loadMoreBtn.hidden = true
     section.innerHTML = `
       <div class="gallery__error">
         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
@@ -82,6 +105,6 @@ export function Gallery() {
     `
   }
 
-  return { element: wrapper, render, showLoading, showError }
+  return { element: wrapper, render, append, setLoadingMore, showLoading, showError }
 }
 

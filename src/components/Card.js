@@ -17,8 +17,7 @@ function formatLikes(likes) {
 
 function formatDate(iso) {
   if (!iso) return ''
-  const d = new Date(iso)
-  return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`
+  return new Date(iso).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })
 }
 
 const AVATAR_COLORS = ['#b5e550', '#4a90d9', '#9b59b6', '#f39c12', '#e74c3c', '#1abc9c', '#e91e8c', '#3498db']
@@ -29,9 +28,9 @@ function avatarColor(name) {
 }
 
 export function Card({ imageUrl, altDescription, authorName, authorAvatar, authorLink, detailLink, likes, bgColor, createdAt, totalPhotos }) {
-  const likesText  = formatLikes(likes)
-  const altText    = altDescription || `Foto de ${authorName}`
-  const dateText   = formatDate(createdAt)
+  const likesText = formatLikes(likes)
+  const altText = altDescription || `Foto de ${authorName}`
+  const dateText = formatDate(createdAt)
   const photosText = totalPhotos ? `+${totalPhotos}` : ''
   const borderColor = avatarColor(authorName || '')
 

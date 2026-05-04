@@ -27,17 +27,21 @@ export function Header({ onSearch, onReset }) {
         placeholder="Buscar"
         aria-label="Buscar fotos"
       />
+      <button class="header__search-btn" aria-label="Buscar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </button>
     </div>
 
     <div class="header__actions">
-      <!-- Campanita -->
       <button class="header__icon-btn" aria-label="Notificaciones">
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
           <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
         </svg>
       </button>
-      <!-- Bocadillo con puntos -->
       <button class="header__icon-btn" aria-label="Mensajes">
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
@@ -46,7 +50,6 @@ export function Header({ onSearch, onReset }) {
           <circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/>
         </svg>
       </button>
-      <!-- Avatar con inicial -->
       <button class="header__icon-btn header__icon-btn--avatar" aria-label="Perfil">
         S
       </button>
@@ -55,6 +58,7 @@ export function Header({ onSearch, onReset }) {
 
   const input = header.querySelector('.header__input')
   const logo = header.querySelector('.header__logo')
+  const searchBtn = header.querySelector('.header__search-btn')
 
   function triggerSearch() {
     const query = input.value.trim()
@@ -67,6 +71,7 @@ export function Header({ onSearch, onReset }) {
   const searchWrapper = header.querySelector('.header__search')
   searchWrapper.addEventListener('click', () => input.focus())
   input.addEventListener('keydown', e => e.key === 'Enter' && triggerSearch())
+  searchBtn.addEventListener('click', e => { e.stopPropagation(); triggerSearch() })
 
   logo.style.cursor = 'pointer'
   logo.addEventListener('click', () => {
